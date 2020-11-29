@@ -14,6 +14,7 @@ class CSkyBox
 {
 private:
     CBMPLoader  m_texture[6];
+    Vector3 skyPosition;
 public:
     CSkyBox();
     ~CSkyBox();
