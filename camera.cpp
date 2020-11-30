@@ -9,7 +9,7 @@ Camera::Camera() {
     m_Position = zero;
     m_View = view;
     m_UpVector = up;
-    m_Speed = 0.2f;
+    m_Speed = 10.0f;
 }
 
 void Camera::setCamera(

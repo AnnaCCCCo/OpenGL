@@ -14,17 +14,17 @@ class CSkyBox
 {
 private:
     CBMPLoader  m_texture[6];
-    Vector3 skyPosition;
 public:
     CSkyBox();
     ~CSkyBox();
 
+    float x;
+    float y;
+    float z;
+
     bool Init(char* back, char* front, char* bottom, char* top, char* right, char* left);
 
-    void  CreateSkyBox(
-        Vector3 position,
-        float width, float height,
-        float length);
+    void CreateSkyBox(Vector3 position);
     const unsigned int MAP_WIDTH = 1024;
     const unsigned int CELL_WIDTH = 16;
     const unsigned int MAP = MAP_WIDTH * CELL_WIDTH / 2;

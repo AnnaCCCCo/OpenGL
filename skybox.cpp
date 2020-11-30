@@ -42,36 +42,35 @@ bool CSkyBox::Init(char* back, char* front, char* bottom, char* top, char* right
 
 }
 
-void  CSkyBox::CreateSkyBox(
-    Vector3 position,
-    float box_width, float box_height,
-    float box_length) 
-{
+void  CSkyBox::CreateSkyBox(Vector3 position) {
+    x = position.x;
+    y = position.y;
+    z = position.z;
+
     GLboolean lp;
     glGetBooleanv(GL_LIGHTING, &lp);
 
-    float width = MAP * box_width / 8;
-    float height = MAP * box_height / 8;
-    float length = MAP * box_length / 8;
+    float width = MAP / 8;
+    float height = MAP / 16;
+    float length = MAP / 8;
 
-    position.x = position.x + MAP / 8 - width / 2;
-    position.y = position.y + MAP / 24 - height / 2;
-    position.z = position.z + MAP / 8 - length / 2;
+    x = x - width / 2;
+    y = y - height / 2;
+    z = z - length / 2;
 
     glDisable(GL_LIGHTING);
 
     glPushMatrix();
-    glTranslatef(-position.x, -position.y, -position.z);
 
     //back
     glBindTexture(GL_TEXTURE_2D, m_texture[0].ID);
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x + width, position.y, position.z);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x + width, position.y + height, position.z);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x, position.y + height, position.z);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x, position.y, position.z);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
 
     glEnd();
 
@@ -80,22 +79,10 @@ void  CSkyBox::CreateSkyBox(
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x, position.y, position.z + length);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x, position.y + height, position.z + length);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x + width, position.y + height, position.z + length);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x + width, position.y, position.z + length);
-
-    glEnd();
-
-    //bottom
-    glBindTexture(GL_TEXTURE_2D, m_texture[2].ID);
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x, position.y, position.z);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x, position.y, position.z + length);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x + width, position.y, position.z + length);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x + width, position.y, position.z);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
 
     glEnd();
 
@@ -104,10 +91,22 @@ void  CSkyBox::CreateSkyBox(
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x + width, position.y + height, position.z);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x + width, position.y + height, position.z + length);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x, position.y + height, position.z + length);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x, position.y + height, position.z);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z + length);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y + height, z + length);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+
+    glEnd();
+
+    //bottom
+    glBindTexture(GL_TEXTURE_2D, m_texture[2].ID);
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y, z + length);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z + length);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
 
     glEnd();
 
@@ -116,10 +115,10 @@ void  CSkyBox::CreateSkyBox(
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x, position.y + height, position.z);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x, position.y + height, position.z + length);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x, position.y, position.z + length);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x, position.y, position.z);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
 
     glEnd();
 
@@ -128,10 +127,10 @@ void  CSkyBox::CreateSkyBox(
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(position.x + width, position.y, position.z);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(position.x + width, position.y, position.z + length);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(position.x + width, position.y + height, position.z + length);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(position.x + width, position.y + height, position.z);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
     glEnd();
 
     glPopMatrix();
@@ -141,3 +140,4 @@ void  CSkyBox::CreateSkyBox(
     }
 
 }
+

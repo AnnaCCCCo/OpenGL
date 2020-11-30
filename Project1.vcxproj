@@ -142,12 +142,14 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CBMPloader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="skybox.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="CBMPloader.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>
