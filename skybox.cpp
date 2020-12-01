@@ -135,9 +135,8 @@ void  CSkyBox::CreateSkyBox(Vector3 position) {
 
     glPopMatrix();
 
-    if (lp) {
-        glEnable(GL_LIGHTING);
-    }
+    glEnable(GL_LIGHTING);
+
 
 }
 

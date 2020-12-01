@@ -1,6 +1,9 @@
 #include <iostream>
 #include "model.h"
+#include <time.h>
 using namespace std;
+
+int randmap = 0;
 
 void CModel::DrawBuilding(Vector3 pos, float height, float length, float width) {
 	x = pos.x;
@@ -38,7 +41,9 @@ void CModel::DrawBuilding(Vector3 pos, float height, float length, float width) 
 	glEnd();
 
 	//round-----------------------------------
-	glBindTexture(GL_TEXTURE_2D, texture.ID);
+	srand((unsigned)time(NULL));
+	randmap = rand() % 5;
+	glBindTexture(GL_TEXTURE_2D, texture[randmap].ID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(xLTexPos, 0.0f); glVertex3f(x + halfL, y, z + halfW);                //right down
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(x - halfL, y, z + halfW);                    //left down
@@ -71,18 +76,22 @@ void CModel::DrawBuilding(Vector3 pos, float height, float length, float width) 
 }
 
 void CModel::Init() {
-	char filename[] = "city.bmp";
-	if (!texture.LoadBitmap(filename)) {
-		exit(0);
-	}
-	glGenTextures(1, &texture.ID);
-	glBindTexture(GL_TEXTURE_2D, texture.ID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_FILL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_FILL);
+	char* filename;
+	char* bmpName[] = { "city.bmp","city2.bmp","city3.bmp","city4.bmp","city5.bmp" };
+	for (int i = 0; i < 5; i++) {
+		filename = bmpName[i];
+		if (!texture[i].LoadBitmap(filename)) {
+			exit(0);
+		}
+		glGenTextures(1, &texture[i].ID);
+		glBindTexture(GL_TEXTURE_2D, texture[i].ID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_FILL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_FILL);
 
-	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, texture.imageWidth,
-		texture.imageHeight, GL_RGB, GL_UNSIGNED_BYTE,
-		texture.image);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, texture[i].imageWidth,
+			texture[i].imageHeight, GL_RGB, GL_UNSIGNED_BYTE,
+			texture[i].image);
+	}
 }
