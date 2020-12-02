@@ -166,6 +166,7 @@ void display(void) {
     
     m_SkyBox.CreateSkyBox(m_Camera.getPosition());
     drawGround();
+    drawGround();
     drawBuildings();
     
     // Particle
@@ -261,6 +262,7 @@ int main(int argc, char** argv) {
     init();
     
     glutReshapeFunc(ChangeSize);
+    
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
     glutPassiveMotionFunc(motion);
