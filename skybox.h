@@ -25,7 +25,7 @@ public:
     bool Init(char* back, char* front, char* bottom, char* top, char* right, char* left);
 
     void CreateSkyBox(Vector3 position);
-    const unsigned int MAP_WIDTH = 1024;
+    const unsigned int MAP_WIDTH = 2048;
     const unsigned int CELL_WIDTH = 16;
     const unsigned int MAP = MAP_WIDTH * CELL_WIDTH / 2;
 };

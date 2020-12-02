@@ -23,6 +23,14 @@ public:
     float getY() { return m_Position.y; }
     float getZ() { return m_Position.z; }
 
+    float getVX() { return m_View.x; }
+    float getVY() { return m_View.y; }
+    float getVZ() { return m_View.z; }
+
+    float getUX() { return m_UpVector.x; }
+    float getUY() { return m_UpVector.y; }
+    float getUZ() { return m_UpVector.z; }
+
     float getSpeed() { return m_Speed; }
 
     void setSpeed(float speed)

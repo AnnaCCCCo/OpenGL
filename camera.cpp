@@ -1,10 +1,11 @@
 #include <iostream>
 #include "Camera.h"
+using namespace std;
 
 Camera::Camera() {
     Vector3 zero = Vector3(0.0, 0.0, 0.0);
-    Vector3 view = Vector3(0.0, 1.0, 0.5);
-    Vector3 up = Vector3(0.0, 0.0, 1.0);
+    Vector3 view = Vector3(0.0, 0.0, 1.0);
+    Vector3 up = Vector3(0.0, 1.0, 0.0);
 
     m_Position = zero;
     m_View = view;
@@ -73,8 +74,8 @@ void Camera::setViewByMouse() {//rotate the camera by mouse
     angleZ = (float)((middleY - mousePos.y)) / 1000.0f;
 
     static float lastRotX = 0.0f;//angle
+    
     lastRotX = currentRotX;
-
     currentRotX += angleZ;
 
     if (currentRotX > 1.0f) {

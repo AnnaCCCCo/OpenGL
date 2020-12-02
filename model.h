@@ -14,7 +14,7 @@ private:
 	float y;
 	float z;
 	Vector3 position;
-	CBMPLoader texture;
+	CBMPLoader texture[5];
 	const float perwindow = 5.0f;
 
 public:
