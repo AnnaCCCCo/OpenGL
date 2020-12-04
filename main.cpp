@@ -3,6 +3,7 @@
 #include<gl/glu.h>
 #include<gl/gl.h>
 #include<random>
+#include<time.h>
 
 #include "Camera.h"
 #include "SkyBox.h"
@@ -17,6 +18,8 @@ Particle* particles;
 CBMPLoader groundTex;
 
 const unsigned int particleNum = 4000;
+bool autoCamera = false;
+float timePerFrame = 1000 / 60;
 
 float RandX()          //random particle x range from -130 to 680
 {
@@ -29,6 +32,14 @@ float RandY()          //random particle y range from -100 to 300
 float RandZ()          //random particle z range from -130 to 630
 {
     return (rand() % 760) - 130;
+}
+
+void timer() {
+    float lastTime = GetTickCount64() * 0.001f;
+    float currentTime = GetTickCount64() * 0.001f;
+    if ((currentTime - lastTime) < timePerFrame) {
+        Sleep(timePerFrame);
+    }
 }
 
 void drawGround() {
@@ -77,7 +88,7 @@ void init(void) {
 
     glEnable(GL_TEXTURE_2D);
 
-    //   粒子初始化位置
+    //init particle
     particles = new Particle[particleNum];
     Vector3 position;
     for (int i = 0; i < particleNum; ++i)
@@ -102,19 +113,16 @@ void init(void) {
     groundInit();
     m_model.Init();
 
-    ///*
-    glEnable(GL_LIGHTING);
-
     float ambientColor[] = { 0.3, 0.3, 0.3, 1.0 };   
     float diffuseColor[] = { 0.8, 0.8, 0.8, 1.0 };   
     float specularColor[] = { 1.0, 1.0, 1.0, 1.0 };  
-    float lightPos[] = { -130.0, 300.0, -130.0, 0.0 };//the position of light. the last 0
+    float lightPos[] = { 1.0, 1.0, 1.0, 0.0 };
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColor);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColor);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specularColor);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+    glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    //*/
 }
 
 void drawBuildings() {
@@ -159,13 +167,15 @@ void drawBuildings() {
 }
 
 void display(void) {
+    timer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     
     m_Camera.setLook();
     
     m_SkyBox.CreateSkyBox(m_Camera.getPosition());
-    drawGround();
+    m_Camera.movement(autoCamera, 1.0f, 'p');
+    
     drawGround();
     drawBuildings();
     
@@ -194,13 +204,10 @@ void ChangeSize(int width, int height) {
 
 void motion(int x, int y) {
     m_Camera.setViewByMouse();
-    cout << "VIEW: " << m_Camera.getVX() << "  " << m_Camera.getVY() << "  " << m_Camera.getVZ() << endl;
-    cout << "UP: " << m_Camera.getUX() << "  " << m_Camera.getUY() << "  " << m_Camera.getUZ() << endl;
     glutPostRedisplay();
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    bool autoCamera = false;
     switch (key) {
     case 27:
         exit(0);
@@ -213,21 +220,17 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'w':
         m_Camera.movement(false, m_Camera.getSpeed(), 'w');
-        cout << m_Camera.getX() << "  " << m_Camera.getY() << "  " << m_Camera.getZ() << endl;
         break;
     case 's':
         m_Camera.movement(false, -m_Camera.getSpeed(), 's');
-        cout << m_Camera.getX() << "  " << m_Camera.getY() << "  " << m_Camera.getZ() << endl;
         break;
     case 'a':
         m_Camera.movement(false, -m_Camera.getSpeed(), 'a');
-        cout << m_Camera.getX() << "  " << m_Camera.getY() << "  " << m_Camera.getZ() << endl;
         break;
     case 'd':
         m_Camera.movement(false, m_Camera.getSpeed(), 'd');
-        cout << m_Camera.getX() << "  " << m_Camera.getY() << "  " << m_Camera.getZ() << endl;
         break;
-    case GLUT_KEY_F1:
+    case 'p':
         if (autoCamera == false) {
             autoCamera = true;
         }
@@ -235,18 +238,14 @@ void keyboard(unsigned char key, int x, int y) {
             autoCamera = false;
         }
         break;
-    default:
-        m_Camera.movement(autoCamera, 10.0f, GLUT_KEY_F1);
-        break;
     }
-
     glutPostRedisplay();
 }
 
 void keychart() {
     cout << "Use ESC to exit." << endl
         << "Use WASD to move the camera." << endl
-        << "Press F1 to activate/de-activate auto camera." << endl;
+        << "Press P to activate/de-activate auto camera." << endl;
 }
 
 int main(int argc, char** argv) {

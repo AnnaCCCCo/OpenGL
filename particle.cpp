@@ -13,7 +13,7 @@ void Particle::InitParticle()
 {
 	mCurrentPosition = mStartPostion;
 
-	mCurrentPosition.y = 180;        // 高空生成雨点
+	mCurrentPosition.y = 180;
 }
 
 void Particle::Update()
@@ -35,7 +35,7 @@ void Particle::Draw()
 {
 	glPushMatrix();
 	glTranslatef(mCurrentPosition.x, mCurrentPosition.y, mCurrentPosition.z);
-	glutSolidCube(1);
+	glutSolidCube(0.5f);
 	glPopMatrix();
 }
 

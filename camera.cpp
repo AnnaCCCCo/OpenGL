@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Camera.h"
+#include <time.h>
 using namespace std;
 
 Camera::Camera() {
@@ -145,7 +146,7 @@ void Camera::setLook() {
 
 void Camera::movement(bool autoCamera, float speed, char key) {
     if (autoCamera) {
-
+        autoMove();
     }
     else {
         switch (key) {
@@ -163,4 +164,25 @@ void Camera::movement(bool autoCamera, float speed, char key) {
             break;
         }
     }
+}
+
+int getTime()
+{
+    return clock() / CLOCKS_PER_SEC;
+}
+
+int lastTime = 0;
+
+void Camera::autoMove() {
+    gluLookAt(79.0f, 0.0f, -38.0f,
+        79.0f, 0.0f, -37.0f,
+        0.0f, 1.0f, 0.0f);
+
+    int now = getTime();
+    if (now - lastTime > 0)
+    {
+        moveCamera(20.0f);
+        lastTime = now;
+    }
+
 }

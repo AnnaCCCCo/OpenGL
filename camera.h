@@ -47,6 +47,7 @@ public:
     void yawCamera(float speed);
     void moveCamera(float speed);
     void movement(bool autoCamera, float speed, char key);
+    void autoMove();
 
     void setLook();
 };
